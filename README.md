@@ -29,3 +29,6 @@ $ npm install
 # Start to see the application in the localhost:3000
 $ npm run start
 ```
+
+# 📝 License
+This project is made available under the MIT License.
