@@ -1,7 +1,6 @@
 # ⭐ Hashing - Simulator
 * Live (See the application running): https://hashing-simulator-0.web.app/
-* This project is built to simulate hashing with prime numbers as the hash functions (key mod prime), and
- the load factor approach is applied for the sake of uniform distrubition.
+* This project is built to simulate hashing as a homework for the Design and Analysis of Algorithms course.
  
 # ❔ Idea Behind The Project
 * Hashing is basically used for indexing and retrieving in databases for faster retrieval aims
