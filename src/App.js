@@ -155,7 +155,7 @@ export default App;
 const MainContainer = tw.div`w-full h-screen font-sans pt-3`
 const Title = tw.h1`mt-8 font-bold text-gray-900 text-4xl text-center shadow-xl p-2`
 
-const ApplicationContainer = tw.div`mt-4 flex flex-col mx-2 h-screen`
+const ApplicationContainer = tw.div`mt-4 flex flex-col mx-2 h-screen `
 
 const OuterContainer = tw.div`flex justify-around mt-3`
 
