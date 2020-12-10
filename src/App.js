@@ -22,7 +22,7 @@ function App() {
 
  
 
-  // The below code piece works when the 'inputs' list changes (insert or remove operations)
+  // The below useEffect works when the 'inputs' list changes (after the insert or remove operations)
   useEffect(() => {
     // if it's a removal change
     if (isRemoved) {
