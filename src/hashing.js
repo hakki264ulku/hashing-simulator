@@ -129,15 +129,24 @@ function newBucketsWithInputs(inputs, prime) {
 
     let newBuckets = new Array(prime)
     for (let i = 0; i < newBuckets.length; i++) {
-      newBuckets[i] = new LinkedList()
+        newBuckets[i] = new LinkedList()
     }
     inputs.forEach(input => {
-      let hashValue = mod(input, prime)
-      newBuckets[hashValue].addNode(input)
+        let hashValue = mod(input, prime)
+        newBuckets[hashValue].addNode(input)
     });
 
     return newBuckets
-  }
+}
+
+function doesAnyBucketExceedsDepthLimit(buckets, depthLimit) {
+    
+    for (let i = 0; i < buckets.length; i++) {
+        const b = buckets[i];
+        if(b.size > depthLimit) return true
+    }
+    return false
+}
 
 function mod(n, m) {
     return ((n % m) + m) % m;
@@ -147,6 +156,7 @@ export {
     findNextPrime,
     getSizeOfBuckets,
     mod, newBucketsWithInputs,
+    doesAnyBucketExceedsDepthLimit,
 
     LinkedList
 }

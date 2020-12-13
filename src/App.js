@@ -5,22 +5,42 @@ import TopContainer from './topContainer'
 
 import {
   findNextPrime, LinkedList, newBucketsWithInputs,
-  getSizeOfBuckets, mod
+  getSizeOfBuckets, mod, doesAnyBucketExceedsDepthLimit
 } from './hashing'
 
 
 function App() {
-  const DEFAULT_LOAD_FACTOR = 0.75
+  const BucketDepthLimit = 5
 
   const [inputs, setInputs] = useState([]) // array of integer values as input keys
   const [currentInput, setCurrentInput] = useState(0)
   const [currentInputRemove, setCurrentInputRemove] = useState(0)
   const [primeNumber, setPrimeNumber] = useState(2) // prime number is initialized as 2
   const [currentLoadFactor, setCurrentLoadFactor] = useState(0) // current load factor for the application will be shown to the users
+  const [defaultLoadFactor, setDefaultLoadFactor] = useState(0.75) // current load factor for the application will be shown to the users
   const [buckets, setBuckets] = useState([new LinkedList(), new LinkedList()]) // will contain linked list in it
   const [isRemoved, setIsRemoved] = useState(false)
+  const [isLoadFactorEntered, setIsLoadFactorEntered] = useState(false)
 
- 
+
+  useEffect(() => {
+    let answer = null
+
+    while(!answer){
+      answer = prompt("Please enter the default load factor before starting the simulation (0.75 is recomended as a default load factor)")
+
+      if(isNaN(parseFloat(answer))){
+        alert("You have to enter a float value as a default load factor!")
+        answer=null
+        continue
+      }
+
+      setDefaultLoadFactor(parseFloat(answer))
+      
+    }
+
+
+  }, [])
 
   // The below useEffect works when the 'inputs' list changes (after the insert or remove operations)
   useEffect(() => {
@@ -32,7 +52,7 @@ function App() {
       setBuckets(newBuckets)
       setCurrentInputRemove(0)
 
-      setCurrentLoadFactor(1.0*getSizeOfBuckets(newBuckets)/primeNumber)
+      setCurrentLoadFactor(1.0 * getSizeOfBuckets(newBuckets) / primeNumber)
 
       return
     }
@@ -45,7 +65,8 @@ function App() {
 
       setCurrentLoadFactor(1.0 * getSizeOfBuckets(buckets) / primeNumber)
 
-      if (1.0 * getSizeOfBuckets(buckets) / primeNumber >= DEFAULT_LOAD_FACTOR) {
+      if (1.0 * getSizeOfBuckets(buckets) / primeNumber >= defaultLoadFactor
+       || doesAnyBucketExceedsDepthLimit(buckets, BucketDepthLimit)){
         let nextPrime = findNextPrime(primeNumber)
 
         setPrimeNumber(nextPrime)
@@ -55,6 +76,8 @@ function App() {
 
         setCurrentLoadFactor(1.0 * getSizeOfBuckets(buckets) / nextPrime)
       }
+      // if any bucket is over the bucket depth limit rehash againg
+
       setCurrentInput(0)
     }
   }, [inputs])
@@ -74,12 +97,11 @@ function App() {
 
   const handleRemoveSubmit = (e) => {
     e.preventDefault()
-    
+
     //Remove only one element
     let flag = true
     let newInputs = inputs.filter(i => {
       if (i === currentInputRemove && flag) {
-        console.log(currentInputRemove + ": " + i)
         flag = false
         return false
       }
@@ -110,7 +132,8 @@ function App() {
           </FormsContainer>
 
           <ShowContainer>
-          <Info>Default Load Factor: {DEFAULT_LOAD_FACTOR}</Info>
+            <Info>Default Load Factor: {defaultLoadFactor}</Info>
+            <Info>Bucket Depth Limit: {BucketDepthLimit}</Info>
             <Info>Current Load Factor: {currentLoadFactor.toFixed(4)}</Info>
             <span>Inputs: </span>
             <Inputs>[
@@ -119,7 +142,7 @@ function App() {
               </Inputs>
           </ShowContainer>
 
-            <ResetButton onClick={()=>window.location.reload()}>Reset All</ResetButton>
+          <ResetButton onClick={() => window.location.reload()}>Reset All</ResetButton>
 
         </OuterContainer>
 
